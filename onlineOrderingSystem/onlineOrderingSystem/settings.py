@@ -75,8 +75,11 @@ WSGI_APPLICATION = 'onlineOrderingSystem.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'F17OnlineOrdering',
+        'USER': 'uwe5tglx',
+        'PASSWORD': 'cpsc4910',
+        'HOST': 'mysql1.cs.clemson.edu',
     }
 }
 
