@@ -266,9 +266,14 @@
                   <td>1/1/2017</td>
                   <td>$999,999,999</td>
                 </tr>
-				{%for tickets in alltickets%}
+				{% for tickets in alltickets %}
 					<tr>
-						<td>{{tickets.name}}</td>	
+						<td> {{tickets.customer_name}} </td>
+						<td> {{tickets.customer_address}} </td>
+						<td> {{tickets.customer_email_address}} </td>
+						<td> {{tickets.customer_phone_number}} </td>
+						<td> {{tickets.price_posttax_total}} </td>
+						<td> {{tickets.id}} </td>	
 					</tr>
 				 {% endfor %}
               </tbody>
