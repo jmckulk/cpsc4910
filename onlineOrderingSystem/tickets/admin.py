@@ -1,7 +1,9 @@
 from django.contrib import admin
-from .models import ticket, order, side
+from .models import Ticket, Meal, Side, Addition, Subtraction
 
 # Register your models here.
-admin.site.register(ticket)
-admin.site.register(order)
-admin.site.register(side)
+admin.site.register(Ticket)
+admin.site.register(Meal)
+admin.site.register(Side)
+admin.site.register(Addition)
+admin.site.register(Subtraction)

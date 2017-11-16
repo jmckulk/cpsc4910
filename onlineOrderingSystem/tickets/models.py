@@ -1,25 +1,42 @@
 from django.db import models
-from menu.models import meal, drink, side
+from menu.models import Meal as MenuMeal
+from menu.models import Drink as MenuDrink
+from menu.models import Side as MenuSide
+from menu.models import Topping as MenuTopping
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
-# ticket: contains all top level info for a customer order ticket (customer info, pricing, etc)
-class ticket(models.Model):
+
+# Ticket: contains all top level info for a customer order ticket (customer info, pricing, etc)
+class Ticket(models.Model):
     customer_name = models.CharField(max_length=100, null=False, blank=False)
     customer_address = models.CharField(max_length=150, null=False, blank=False)
     customer_email_address = models.EmailField(max_length=100, null=False, blank=False)
-    customer_phone_number = models.IntegerField(null=False, blank=False)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
+                                 message="Phone number must be entered in the format: '+999999999'. "
+                                         "Up to 15 digits allowed.")
+    customer_phone_number = models.CharField(validators=[phone_regex], max_length=15, null=False, blank=False)
 
-    price_pretax_total = models.IntegerField(null=False, blank=False)
-    price_tax = models.IntegerField(null=False, blank=False)
-    price_posttax_total = models.IntegerField(null=False, blank=False)
+    price_pretax_total = models.FloatField(default=0.0, null=False, blank=False)
+    price_tax = models.FloatField(default=0.0, null=False, blank=False)
+    price_posttax_total = models.FloatField(default=0.0, null=False, blank=False)
 
     creation_time_and_date = models.DateTimeField(auto_now=True, null=False, blank=False)
+    fulfilled = models.BooleanField(default=False)
 
-# order: contains info for single order item as well as ticket it is associated with
-class order(models.Model):
-    ticket = models.ForeignKey(ticket, models.CASCADE, null=False, blank=False)
+    def __str__(self):
+        if self.fulfilled:
+            return "[FULFILLED] [" + str(self.creation_time_and_date) + "] " + self.customer_name
+        else:
+            return "[" + str(self.creation_time_and_date) + "] " + self.customer_name
 
-    meal = models.ForeignKey(meal, models.SET_NULL, null=True, blank=True)
-    drink = models.ForeignKey(drink, models.SET_NULL, null=True, blank=True)
+
+# Meal: contains info for single meal item for a ticket
+class Meal(models.Model):
+    ticket = models.ForeignKey(Ticket, models.CASCADE, null=False, blank=False)
+
+    meal = models.ForeignKey(MenuMeal, models.SET_NULL, null=True, blank=True)
+    drink = models.ForeignKey(MenuDrink, models.SET_NULL, null=True, blank=True)
 
     size_choices = (
         ('SM', 'small'),
@@ -28,8 +45,69 @@ class order(models.Model):
     )
     size = models.CharField(max_length=2, choices=size_choices, default='MD')
 
-# side: contains a side item for the order it relates to
-class side(models.Model):
-    order = models.ForeignKey(order, models.CASCADE, null=False, blank=False)
+    def clean(self):
+        if not (self.meal or self.drink):
+            raise ValidationError("An Meal must have a meal item AND/OR a drink")
 
-    side = models.ForeignKey(side, models.SET_NULL, null=True, blank=False)
+    def __str__(self):
+        if self.meal is not None:
+            return self.meal.name + "[ticket: " + self.ticket.id + "]"
+        elif self.drink is not None:
+            return self.drink.name + "[ticket: " + self.ticket.id + "]"
+        else:
+            return "{MENU ITEM NOT FOUND} [ticket: " + self.ticket.id + "]"
+
+
+# Side: contains a side item for the meal it relates to
+class Side(models.Model):
+    ticket = models.ForeignKey(Ticket, models.CASCADE, null=False, blank=False)
+
+    side = models.ForeignKey(MenuSide, models.SET_NULL, null=True, blank=False)
+
+    def __str__(self):
+        if self.side is not None:
+            return self.side.name + "[ticket: " + self.ticket.id + "]"
+        else:
+            return "{SIDE ITEM NOT FOUND} [ticket: " + self.ticket.id + "]"
+
+
+# Addition: contains an addition to the current item
+class Addition(models.Model):
+    meal = models.ForeignKey(Meal, models.CASCADE, null=True, blank=True)
+    side = models.ForeignKey(Side, models.CASCADE, null=True, blank=True)
+
+    add = models.ForeignKey(MenuTopping, models.SET_NULL, null=True, blank=False)
+
+    def clean(self):
+        if not (self.meal or self.side):
+            raise ValidationError("An Addition must be associated with an MenuMeal OR a MenuSide")
+
+    def __str__(self):
+        if self.add is not None:
+            if self.meal is not None:
+                return self.add.name + "[item: " + self.meal.meal.name + " | ticket: " + self.ticket.id + "]"
+            else:
+                return self.add.name + "[item: " + self.side.side.name + " | ticket: " + self.ticket.id + "]"
+        else:
+            return "{ADDITION NOT FOUND} [ticket: " + self.ticket.id + "]"
+
+
+# Subtraction: contains a subtraction from the specified item
+class Subtraction(models.Model):
+    meal = models.ForeignKey(Meal, models.CASCADE, null=True, blank=True)
+    side = models.ForeignKey(Side, models.CASCADE, null=True, blank=True)
+
+    sub = models.ForeignKey(MenuTopping, models.SET_NULL, null=True, blank=False)
+
+    def clean(self):
+        if not (self.meal or self.side):
+            raise ValidationError("A Subtraction must be associated with an MenuMeal OR a MenuSide")
+
+    def __str__(self):
+        if self.add is not None:
+            if self.meal is not None:
+                return self.add.name + "[item: " + self.meal.meal.name + " | ticket: " + self.ticket.id + "]"
+            else:
+                return self.add.name + "[item: " + self.side.side.name + " | ticket: " + self.ticket.id + "]"
+        else:
+            return "{SUBTRACTION NOT FOUND} [ticket: " + self.ticket.id + "]"

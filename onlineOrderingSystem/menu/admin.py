@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import meal, drink, side
+from .models import Meal, Drink, Side, Topping
 
 # Register your models here.
-admin.site.register(meal)
-admin.site.register(drink)
-admin.site.register(side)
+admin.site.register(Meal)
+admin.site.register(Drink)
+admin.site.register(Side)
+admin.site.register(Topping)
