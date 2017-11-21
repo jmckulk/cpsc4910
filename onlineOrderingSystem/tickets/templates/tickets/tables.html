@@ -259,16 +259,21 @@
               </tfoot>
               <tbody>
                 <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
+                  <td>Joseph</td>
+                  <td>Dev</td>
+                  <td>Clemson</td>
+                  <td>23</td>
+                  <td>1/1/2017</td>
+                  <td>$999,999,999</td>
                 </tr>
-				{%for tickets in alltickets%}
+				{% for tickets in alltickets %}
 					<tr>
-						<td>{{tickets.name}}</td>	
+						<td> {{tickets.customer_name}} </td>
+						<td> {{tickets.customer_address}} </td>
+						<td> {{tickets.customer_email_address}} </td>
+						<td> {{tickets.customer_phone_number}} </td>
+						<td> {{tickets.price_posttax_total}} </td>
+						<td> {{tickets.id}} </td>	
 					</tr>
 				 {% endfor %}
               </tbody>
