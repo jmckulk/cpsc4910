@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %} Tickets | Tiger Orders {% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="#">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item active">Tickets</li>
+    </ol>
+    <!-- Example DataTables Card-->
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="fa fa-table"></i> Order Tickets</div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Order Total</th>
+                <th>Ticket ID</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Order Total</th>
+                <th>Ticket ID</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              {% for tickets in alltickets %}
+                <tr {% if tickets.fulfilled == False %} class="table-danger" {% endif %}>
+                  <td> {% if tickets.fulfilled == False %} [UNFULFILLED] {% endif %} {{ tickets.customer_name }} </td>
+                  <td> {{ tickets.customer_address }} </td>
+                  <td> {{ tickets.customer_email_address }} </td>
+                  <td> {{ tickets.customer_phone_number }} </td>
+                  <td> {{ tickets.price_posttax_total }} </td>
+                  <td> {{ tickets.id }} </td>
+                </tr>
+               {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    </div>
+  </div>
+  <!-- /.container-fluid-->
+  <!-- /.content-wrapper-->
+{% endblock %}
