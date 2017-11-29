@@ -32,7 +32,7 @@
                   <td> {{ tickets.customer_address }} </td>
                   <td> {{ tickets.customer_email_address }} </td>
                   <td> {{ tickets.customer_phone_number }} </td>
-                  <td> {{ tickets.price_posttax_total }} </td>
+                  <td> ${{ tickets.price_posttax_total|floatformat:2 }} </td>
                   <td> {{ tickets.id }} </td>
                 </tr>
                {% endfor %}
