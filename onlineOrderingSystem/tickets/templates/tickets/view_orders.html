@@ -1,7 +1,7 @@
 <!Doctype HTML>
 <html>
 	<head>
-		<title>Kitchen | Online Ordering System</title>
+		<title>Kitchen | Tiger Orders</title>
 		<meta charset="utf-8">
 		
 		<!-- BootStrap -->
@@ -145,7 +145,7 @@
 					</ul>
 
 					<div class="bottom-right">
-						<a class="btn btn-success text-right">Complete Order</a>
+						<a class="btn btn-success text-right" href="{% url 'tickets:fulfill_ticket' ticket1.id %}">Complete Order</a>
 					</div>
 				{% endif %}
 			</div>
@@ -232,7 +232,7 @@
 					</ul>
 
 					<div class="bottom-right">
-						<a class="btn btn-success text-right">Complete Order</a>
+						<a class="btn btn-success text-right" href="{% url 'tickets:fulfill_ticket' ticket2.id %}">Complete Order</a>
 					</div>
 				{% endif %}
 			</div>
@@ -319,7 +319,7 @@
 					</ul>
 
 					<div class="bottom-right">
-						<a class="btn btn-success text-right">Complete Order</a>
+						<a class="btn btn-success text-right" href="{% url 'tickets:fulfill_ticket' ticket3.id %}">Complete Order</a>
 					</div>
 				{% endif %}
 			</div>
@@ -409,7 +409,7 @@
 					</ul>
 
 					<div class="bottom-right">
-						<a class="btn btn-success text-right">Complete Order</a>
+						<a class="btn btn-success text-right" href="{% url 'tickets:fulfill_ticket' ticket4.id %}">Complete Order</a>
 					</div>
 				{% endif %}
 			</div>
@@ -496,7 +496,7 @@
 					</ul>
 
 					<div class="bottom-right">
-						<a class="btn btn-success text-right">Complete Order</a>
+						<a class="btn btn-success text-right" href="{% url 'tickets:fulfill_ticket' ticket5.id %}">Complete Order</a>
 					</div>
 				{% endif %}
 			</div>
@@ -583,7 +583,7 @@
 					</ul>
 
 					<div class="bottom-right">
-						<a class="btn btn-success text-right">Complete Order</a>
+						<a class="btn btn-success text-right" href="{% url 'tickets:fulfill_ticket' ticket6.id %}">Complete Order</a>
 					</div>
 				{% endif %}
 			</div>

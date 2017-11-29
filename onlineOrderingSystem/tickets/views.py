@@ -6,7 +6,7 @@ from django.urls import reverse
 
 # kitchen_view: renders the page for the kitchen to view while preparing orders
 def kitchen_view(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         sixOldestTickets = Ticket.objects.order_by('creation_time_and_date')
 
         meals = {}
@@ -174,8 +174,21 @@ def kitchen_view(request):
         return HttpResponseRedirect(reverse('login:login'))
 
 
+def fulfill_ticket(request, ticketID):
+    if request.user.is_authenticated:
+        ticket = Ticket.objects.get(id=ticketID)
+
+        ticket.fulfilled = True
+        ticket.save()
+
+        return HttpResponseRedirect(reverse('tickets:kitchen_view'))
+
+    else:
+        return HttpResponseRedirect(reverse('login:login'))
+
+
 def manager_view(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         all_tickets = Ticket.objects.order_by('creation_time_and_date')
         return render(request, 'tickets/tickets.html', {
             'alltickets': all_tickets
