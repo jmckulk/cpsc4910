@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def userLogin(request):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         if request.method == 'GET':
             return render(request, 'login/login.html', {})
 
@@ -35,7 +35,7 @@ def userLogout(request):
 
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('tickets:manager_view'))
 
     else:

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">Menu Items</li>
+      </ol>
+      <div class="row">
+        <div class="col-12">
+          <h1>Menu Items</h1>
+          <p>This page shows the available menu items.</p>
+          <div>
+            <div id="Meal">
+              <div class="card mb-3">
+                <div class="card-header">Meal</div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Meal</th>
+                          <th>Description</th>
+                          <th>Price</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>ID</th>
+                          <th>Meal</th>
+                          <th>Description</th>
+                          <th>Price</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        <!-- {% for meal in alltickets %}
+                          <tr>
+                            <td> {{ meal.id }}</td>
+                            <td> {{ meal.name }} </td>
+                            <td> {{ meal.description }} </td>
+                            <td> {{ meal.price }} </td>
+                          </tr>
+                         {% endfor %} -->
+                         <tr>
+                           <td>1</td>
+                           <td>Burger</td>
+                           <td>Meat and buns</td>
+                           <td>$9.99</td>
+                         </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer small text-muted">Updated yesterday at **SOMETIME**</div>
+              </div>
+            </div>
+          </div>
+          <div id="Side">
+            <div class="card mb-3">
+              <div class="card-header">Side</div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Side</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>ID</th>
+                        <th>Side</th>
+                        <th>Price</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>Fries</td>
+                        <td>$2.99</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card-footer small text-muted">Updated yesterday at **SOMETIME**</div>
+            </div>
+          </div>
+          <div id="Drink">
+            <div class="card mb-3">
+              <div class="card-header">Drinks</div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Drink</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Drink</th>
+                        <th>Price</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      <tr>
+                        <tr>
+                          <th>Sweet Tea</th>
+                          <th>$1.99</th>
+                        </tr>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card-footer small text-muted">Updated yesterday at **SOMETIME**</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

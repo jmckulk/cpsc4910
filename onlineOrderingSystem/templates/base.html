@@ -31,27 +31,32 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        
+
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tickets">
           <a class="nav-link" href="{% url 'tickets:manager_view' %}">
-            <span class="nav-link-text">Home - Recent Tickets</span>
+            <span class="nav-link-text">Recent Tickets</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+        <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="tables.html">
             <span class="nav-link-text">Archived Orders</span>
           </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+        </li> -->
+        <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="tables.html">
             <span class="nav-link-text">Inventory Management</span>
           </a>
+        </li> -->
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu">
+          <a class="nav-link" href="{% url 'menu:menu' %}">
+            <span class="nav-link-text">Menu Items</span>
+          </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+        <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="tables.html">
             <span class="nav-link-text">Edit Accounts</span>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Kitchen Terminal">
           <a class="nav-link" href="{% url 'tickets:kitchen_view' %}">
             <span class="nav-link-text">View Kitchen Terminal</span>
