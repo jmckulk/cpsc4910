@@ -25,17 +25,6 @@
                 <th>Ticket ID</th>
               </tr>
             </thead>
-            <!--<tfoot>
-              <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Order Total</th>
-                <th>Ticket ID</th>
-              </tr>
-            </tfoot>
-            -->
             <tbody>
               {% for tickets in alltickets %}
                 <tr {% if tickets.fulfilled == False %} class="table-danger" {% endif %}>
@@ -51,7 +40,7 @@
           </table>
         </div>
       </div>
-      <div class="card-footer small text-muted">Updated at x</div>
+      <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
     </div>
   </div>
   <!-- /.container-fluid-->

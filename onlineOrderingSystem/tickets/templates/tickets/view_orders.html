@@ -13,6 +13,7 @@
 				height: 100%;
 				padding: 0;
 				margin:0;
+				overflow: hidden;
 			}
 			
 			.half-row {
@@ -62,60 +63,529 @@
 	
 		<div id="top-row" class="half-row">
 			<div id="top-1" class="order-block">
-				<h1>Nathan Harrell</h1>
-				<ul class="orders">
-					<li>Cheese Burger Combo</li>
-					<ul>
-						<li>No Lettuce</li>
-						<li>Medium Fry</li>
+				{% if ticket1 %}
+					<h1>{{ ticket1.customer_name }}</h1>
+
+					<ul class="orders">
+						{# DISPLAY MEALS #}
+						{% for ticketID, ticketMeals in meals.items %}
+							{% if ticketID == ticket1.id %}
+								{% for meal in ticketMeals %}
+									<li>{{ meal.meal.name }} [{{ meal.size }}]</li>
+
+									<ul>
+									{% for addTicketID, ticketMealAdditions in mealAdditions.items %}
+										{% if addTicketID == ticket1.id %}
+											{% for mealID, thisMealAdditions in ticketMealAdditions.items %}
+												{% if mealID == meal.id %}
+													{% for addition in thisMealAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketMealSubtractions in mealSubtractions.items %}
+										{% if subTicketID == ticket1.id %}
+											{% for mealID, thisMealSubtractions in ticketMealSubtractions.items %}
+												{% if mealID == meal.id %}
+													{% for subtraction in thisMealSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+
+						{# DISPLAY SIDES #}
+						{% for ticketID, ticketSides in sides.items %}
+							{% if ticketID == ticket1.id %}
+								{% for side in ticketSides %}
+									<li>{{ side.side.name }}</li>
+
+									<ul>
+									{% for addTicketID, ticketSideAdditions in sideAdditions.items %}
+										{% if addTicketID == ticket1.id %}
+											{% for sideID, thisSideAdditions in ticketSideAdditions.items %}
+												{% if sideID == side.id %}
+													{% for addition in thisSideAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketSideSubtractions in sideSubtractions.items %}
+										{% if subTicketID == ticket1.id %}
+											{% for sideID, thisSideSubtractions in ticketSideSubtractions.items %}
+												{% if sideID == side.id %}
+													{% for subtraction in thisSideSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
 					</ul>
-					<li>Milkshake</li>
-				</ul>
-				<div class="bottom-right">
-					<a class="btn btn-success text-right">Complete Order</a>
-				</div>
+
+					<div class="bottom-right">
+						<a class="btn btn-success text-right">Complete Order</a>
+					</div>
+				{% endif %}
 			</div>
 			<div id="top-2" class="order-block">
-				<h1>Heavy Spender</h1>
-				<ul class="orders">
-					<li>Double Deluxe Bacon Burger Combo</li>
-					<ul>
-						<li>No Lettuce</li>
-						<li>No Onion</li>
-						<li>Extra Bacon</li>
-						<li>Triple Cheese</li>
-						<li>Double the grease</li>
-						<li>SUPER SIZE <sup>TM</sup> Fry</li>
+				{% if ticket2 %}
+					<h1>{{ ticket2.customer_name }}</h1>
+
+					<ul class="orders">
+						{# DISPLAY MEALS #}
+						{% for ticketID, ticketMeals in meals.items %}
+							{% if ticketID == ticket2.id %}
+								{% for meal in ticketMeals %}
+									<li>{{ meal.meal.name }} [{{ meal.size }}]</li>
+
+									<ul>
+									{% for addTicketID, ticketMealAdditions in mealAdditions.items %}
+										{% if addTicketID == ticket2.id %}
+											{% for mealID, thisMealAdditions in ticketMealAdditions.items %}
+												{% if mealID == meal.id %}
+													{% for addition in thisMealAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketMealSubtractions in mealSubtractions.items %}
+										{% if subTicketID == ticket2.id %}
+											{% for mealID, thisMealSubtractions in ticketMealSubtractions.items %}
+												{% if mealID == meal.id %}
+													{% for subtraction in thisMealSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+
+						{# DISPLAY SIDES #}
+						{% for ticketID, ticketSides in sides.items %}
+							{% if ticketID == ticket2.id %}
+								{% for side in ticketSides %}
+									<li>{{ side.side.name }}</li>
+
+									<ul>
+									{% for addTicketID, ticketSideAdditions in sideAdditions.items %}
+										{% if addTicketID == ticket2.id %}
+											{% for sideID, thisSideAdditions in ticketSideAdditions.items %}
+												{% if sideID == side.id %}
+													{% for addition in thisSideAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketSideSubtractions in sideSubtractions.items %}
+										{% if subTicketID == ticket2.id %}
+											{% for sideID, thisSideSubtractions in ticketSideSubtractions.items %}
+												{% if sideID == side.id %}
+													{% for subtraction in thisSideSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
 					</ul>
-					<li>Milkshake</li>
-					<li>All</li>
-					<li>The</li>
-					<li>Goddamn</li>
-					<li>Food</li>
-					<li>HUFF - lkasjdlkfs;ldafjsdjfasjlfjlkasjd;lfkjslkfjlksajd;lfjaslkdjflasjdfljdaks</li>
-				</ul>
-				<div class="bottom-right">
-					<a class="btn btn-success">Complete Order</a>
-				</div>
+
+					<div class="bottom-right">
+						<a class="btn btn-success text-right">Complete Order</a>
+					</div>
+				{% endif %}
 			</div>
 			<div id="top-3" class="order-block">
-                <ul class="orders">
-                    {% for ticket in displayTickets %}
-                        <li>{{ ticket.creation_time_and_date }}</li>
-                    {% endfor %}
-                </ul>
+				{% if ticket3 %}
+					<h1>{{ ticket3.customer_name }}</h1>
+
+					<ul class="orders">
+						{# DISPLAY MEALS #}
+						{% for ticketID, ticketMeals in meals.items %}
+							{% if ticketID == ticket3.id %}
+								{% for meal in ticketMeals %}
+									<li>{{ meal.meal.name }} [{{ meal.size }}]</li>
+
+									<ul>
+									{% for addTicketID, ticketMealAdditions in mealAdditions.items %}
+										{% if addTicketID == ticket3.id %}
+											{% for mealID, thisMealAdditions in ticketMealAdditions.items %}
+												{% if mealID == meal.id %}
+													{% for addition in thisMealAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketMealSubtractions in mealSubtractions.items %}
+										{% if subTicketID == ticket3.id %}
+											{% for mealID, thisMealSubtractions in ticketMealSubtractions.items %}
+												{% if mealID == meal.id %}
+													{% for subtraction in thisMealSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+
+						{# DISPLAY SIDES #}
+						{% for ticketID, ticketSides in sides.items %}
+							{% if ticketID == ticket3.id %}
+								{% for side in ticketSides %}
+									<li>{{ side.side.name }}</li>
+
+									<ul>
+									{% for addTicketID, ticketSideAdditions in sideAdditions.items %}
+										{% if addTicketID == ticket3.id %}
+											{% for sideID, thisSideAdditions in ticketSideAdditions.items %}
+												{% if sideID == side.id %}
+													{% for addition in thisSideAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketSideSubtractions in sideSubtractions.items %}
+										{% if subTicketID == ticket3.id %}
+											{% for sideID, thisSideSubtractions in ticketSideSubtractions.items %}
+												{% if sideID == side.id %}
+													{% for subtraction in thisSideSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+
+					<div class="bottom-right">
+						<a class="btn btn-success text-right">Complete Order</a>
+					</div>
+				{% endif %}
 			</div>
 		</div>
 		
 		<div id="bottom-row" class="half-row">
 			<div id="bottom-1" class="order-block">
+				{% if ticket4 %}
+					<h1>{{ ticket4.customer_name }}</h1>
 
+					<ul class="orders">
+						{# DISPLAY MEALS #}
+						{% for ticketID, ticketMeals in meals.items %}
+							{% if ticketID == ticket4.id %}
+								{% for meal in ticketMeals %}
+									<li>{{ meal.meal.name }} [{{ meal.size }}]</li>
+
+									<ul>
+									{% for addTicketID, ticketMealAdditions in mealAdditions.items %}
+										{% if addTicketID == ticket4.id %}
+											{% for mealID, thisMealAdditions in ticketMealAdditions.items %}
+												{% if mealID == meal.id %}
+													{% for addition in thisMealAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketMealSubtractions in mealSubtractions.items %}
+										{% if subTicketID == ticket4.id %}
+											{% for mealID, thisMealSubtractions in ticketMealSubtractions.items %}
+												{% if mealID == meal.id %}
+													{% for subtraction in thisMealSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+
+						{# DISPLAY SIDES #}
+						{% for ticketID, ticketSides in sides.items %}
+							{% if ticketID == ticket4.id %}
+								{% for side in ticketSides %}
+									<li>{{ side.side.name }}</li>
+
+									<ul>
+									{% for addTicketID, ticketSideAdditions in sideAdditions.items %}
+										{% if addTicketID == ticket4.id %}
+											{% for sideID, thisSideAdditions in ticketSideAdditions.items %}
+												{% if sideID == side.id %}
+													{% for addition in thisSideAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketSideSubtractions in sideSubtractions.items %}
+										{% if subTicketID == ticket4.id %}
+											{% for sideID, thisSideSubtractions in ticketSideSubtractions.items %}
+												{% if sideID == side.id %}
+													{% for subtraction in thisSideSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+
+					<div class="bottom-right">
+						<a class="btn btn-success text-right">Complete Order</a>
+					</div>
+				{% endif %}
 			</div>
 			<div id="bottom-2" class="order-block">
+				{% if ticket5 %}
+					<h1>{{ ticket5.customer_name }}</h1>
 
+					<ul class="orders">
+						{# DISPLAY MEALS #}
+						{% for ticketID, ticketMeals in meals.items %}
+							{% if ticketID == ticket5.id %}
+								{% for meal in ticketMeals %}
+									<li>{{ meal.meal.name }} [{{ meal.size }}]</li>
+
+									<ul>
+									{% for addTicketID, ticketMealAdditions in mealAdditions.items %}
+										{% if addTicketID == ticket5.id %}
+											{% for mealID, thisMealAdditions in ticketMealAdditions.items %}
+												{% if mealID == meal.id %}
+													{% for addition in thisMealAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketMealSubtractions in mealSubtractions.items %}
+										{% if subTicketID == ticket5.id %}
+											{% for mealID, thisMealSubtractions in ticketMealSubtractions.items %}
+												{% if mealID == meal.id %}
+													{% for subtraction in thisMealSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+
+						{# DISPLAY SIDES #}
+						{% for ticketID, ticketSides in sides.items %}
+							{% if ticketID == ticket5.id %}
+								{% for side in ticketSides %}
+									<li>{{ side.side.name }}</li>
+
+									<ul>
+									{% for addTicketID, ticketSideAdditions in sideAdditions.items %}
+										{% if addTicketID == ticket5.id %}
+											{% for sideID, thisSideAdditions in ticketSideAdditions.items %}
+												{% if sideID == side.id %}
+													{% for addition in thisSideAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketSideSubtractions in sideSubtractions.items %}
+										{% if subTicketID == ticket5.id %}
+											{% for sideID, thisSideSubtractions in ticketSideSubtractions.items %}
+												{% if sideID == side.id %}
+													{% for subtraction in thisSideSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+
+					<div class="bottom-right">
+						<a class="btn btn-success text-right">Complete Order</a>
+					</div>
+				{% endif %}
 			</div>
 			<div id="bottom-3" class="order-block">
+				{% if ticket6 %}
+					<h1>{{ ticket6.customer_name }}</h1>
 
+					<ul class="orders">
+						{# DISPLAY MEALS #}
+						{% for ticketID, ticketMeals in meals.items %}
+							{% if ticketID == ticket6.id %}
+								{% for meal in ticketMeals %}
+									<li>{{ meal.meal.name }} [{{ meal.size }}]</li>
+
+									<ul>
+									{% for addTicketID, ticketMealAdditions in mealAdditions.items %}
+										{% if addTicketID == ticket6.id %}
+											{% for mealID, thisMealAdditions in ticketMealAdditions.items %}
+												{% if mealID == meal.id %}
+													{% for addition in thisMealAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketMealSubtractions in mealSubtractions.items %}
+										{% if subTicketID == ticket6.id %}
+											{% for mealID, thisMealSubtractions in ticketMealSubtractions.items %}
+												{% if mealID == meal.id %}
+													{% for subtraction in thisMealSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+
+						{# DISPLAY SIDES #}
+						{% for ticketID, ticketSides in sides.items %}
+							{% if ticketID == ticket6.id %}
+								{% for side in ticketSides %}
+									<li>{{ side.side.name }}</li>
+
+									<ul>
+									{% for addTicketID, ticketSideAdditions in sideAdditions.items %}
+										{% if addTicketID == ticket6.id %}
+											{% for sideID, thisSideAdditions in ticketSideAdditions.items %}
+												{% if sideID == side.id %}
+													{% for addition in thisSideAdditions %}
+														<li>ADD {{ addition.add.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+									<ul>
+									{% for subTicketID, ticketSideSubtractions in sideSubtractions.items %}
+										{% if subTicketID == ticket6.id %}
+											{% for sideID, thisSideSubtractions in ticketSideSubtractions.items %}
+												{% if sideID == side.id %}
+													{% for subtraction in thisSideSubtractions %}
+														<li>REMOVE {{ subtraction.sub.name }}</li>
+													{% endfor %}
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									{% endfor %}
+									</ul>
+
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+
+					<div class="bottom-right">
+						<a class="btn btn-success text-right">Complete Order</a>
+					</div>
+				{% endif %}
 			</div>
 		</div>
 	

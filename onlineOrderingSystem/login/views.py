@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Account
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -17,16 +18,25 @@ def userLogin(request):
 
             if user is not None:
                 login(request, user)
-                return HttpResponse("<h1>Login.</h1>")
+                return HttpResponseRedirect(reverse('login:index'))
             else:
                 return render(request, 'login/login.html', {
                     'error': True,
                 })
 
     else:
-        return HttpResponse("<h1>Already logged in.</h1>")
+        return HttpResponseRedirect(reverse('login:index'))
 
 
 def userLogout(request):
     logout(request)
-    return HttpResponse("<h1>logout.</h1>")
+    print("imma reverse")
+    return HttpResponseRedirect(reverse('login:index'))
+
+
+def index(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('tickets:manager_view'))
+
+    else:
+        return HttpResponseRedirect(reverse('login:login'))

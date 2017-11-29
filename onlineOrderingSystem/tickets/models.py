@@ -51,11 +51,11 @@ class Meal(models.Model):
 
     def __str__(self):
         if self.meal is not None:
-            return self.meal.name + "[ticket: " + self.ticket.id + "]"
+            return self.meal.name + "[ticket: " + str(self.ticket.id) + "]"
         elif self.drink is not None:
-            return self.drink.name + "[ticket: " + self.ticket.id + "]"
+            return self.drink.name + "[ticket: " + str(self.ticket.id) + "]"
         else:
-            return "{MENU ITEM NOT FOUND} [ticket: " + self.ticket.id + "]"
+            return "{MENU ITEM NOT FOUND} [ticket: " + str(self.ticket.id) + "]"
 
 
 # Side: contains a side item for the meal it relates to
@@ -66,9 +66,9 @@ class Side(models.Model):
 
     def __str__(self):
         if self.side is not None:
-            return self.side.name + "[ticket: " + self.ticket.id + "]"
+            return self.side.name + "[ticket: " + str(self.ticket.id) + "]"
         else:
-            return "{SIDE ITEM NOT FOUND} [ticket: " + self.ticket.id + "]"
+            return "{SIDE ITEM NOT FOUND} [ticket: " + str(self.ticket.id) + "]"
 
 
 # Addition: contains an addition to the current item
@@ -85,11 +85,11 @@ class Addition(models.Model):
     def __str__(self):
         if self.add is not None:
             if self.meal is not None:
-                return self.add.name + "[item: " + self.meal.meal.name + " | ticket: " + self.ticket.id + "]"
+                return self.add.name + "[item: " + self.meal.meal.name + " | ticket: " + str(self.meal.ticket.id) + "]"
             else:
-                return self.add.name + "[item: " + self.side.side.name + " | ticket: " + self.ticket.id + "]"
+                return self.add.name + "[item: " + self.side.side.name + " | ticket: " + str(self.side.ticket.id) + "]"
         else:
-            return "{ADDITION NOT FOUND} [ticket: " + self.ticket.id + "]"
+            return "{ADDITION NOT FOUND} [ticket: ERROR]"
 
 
 # Subtraction: contains a subtraction from the specified item
@@ -104,10 +104,10 @@ class Subtraction(models.Model):
             raise ValidationError("A Subtraction must be associated with an MenuMeal OR a MenuSide")
 
     def __str__(self):
-        if self.add is not None:
+        if self.sub is not None:
             if self.meal is not None:
-                return self.add.name + "[item: " + self.meal.meal.name + " | ticket: " + self.ticket.id + "]"
+                return self.sub.name + "[item: " + self.meal.meal.name + " | ticket: " + str(self.meal.ticket.id) + "]"
             else:
-                return self.add.name + "[item: " + self.side.side.name + " | ticket: " + self.ticket.id + "]"
+                return self.sub.name + "[item: " + self.side.side.name + " | ticket: " + str(self.side.ticket.id) + "]"
         else:
-            return "{SUBTRACTION NOT FOUND} [ticket: " + self.ticket.id + "]"
+            return "{SUBTRACTION NOT FOUND} [ticket: ERROR]"
