@@ -25,10 +25,10 @@
           <div>
             <div id="Meal">
               <div class="card mb-3">
-                <div class="card-header">Meal</div>
+                <div class="card-header">Meals</div>
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered display" width="100%" cellspacing="0">
                       <thead>
                         <tr>
                           <th>Meal</th>
@@ -64,10 +64,10 @@
           </div>
           <div id="Side">
             <div class="card mb-3">
-              <div class="card-header">Side</div>
+              <div class="card-header">Sides</div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <table class="table table-bordered display" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th>Side</th>
@@ -86,10 +86,10 @@
                     </tbody>
                   </table>
                 </div>
-              </div>
-              <div class="menu-controls">
-                <a class="btn btn-success" data-toggle="modal" data-target="#addSide">Add Side</a>
-                <!--<a class="btn btn-danger">Remove Selected Sides(s)</a>-->
+                <div class="menu-controls">
+                  <a class="btn btn-success" data-toggle="modal" data-target="#addSide">Add Side</a>
+                  <!--<a class="btn btn-danger">Remove Selected Sides(s)</a>-->
+                </div>
               </div>
               <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
             </div>
@@ -99,7 +99,7 @@
               <div class="card-header">Drinks</div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <table class="table table-bordered display" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th>Drink</th>
@@ -107,23 +107,21 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        {% for drink in alldrinkitems %}
-                          {% if drink.current_menu_item %}
-                          <tr>
-                            <td>{{ drink.name }}</td>
-                            <td>${{ drink.price|floatformat:2 }}</td>
-                          </tr>
-                          {% endif %}
-                        {% endfor %}
-                      </tr>
+                      {% for drink in alldrinkitems %}
+                        {% if drink.current_menu_item %}
+                        <tr>
+                          <td>{{ drink.name }}</td>
+                          <td>${{ drink.price|floatformat:2 }}</td>
+                        </tr>
+                        {% endif %}
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
-              </div>
-              <div class="menu-controls">
-                <a class="btn btn-success" data-toggle="modal" data-target="#addDrink">Add Drink</a>
-                <!--<a class="btn btn-danger">Remove Selected Sides(s)</a>-->
+                <div class="menu-controls">
+                  <a class="btn btn-success" data-toggle="modal" data-target="#addDrink">Add Drink</a>
+                  <!--<a class="btn btn-danger">Remove Selected Sides(s)</a>-->
+                </div>
               </div>
               <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
             </div>
@@ -242,4 +240,10 @@
         </div>
       </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+$(document).ready(function() {
+  $('table.display').DataTable();
+});
 {% endblock %}
