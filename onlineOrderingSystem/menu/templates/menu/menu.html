@@ -1,4 +1,17 @@
 {% extends 'base.html' %}
+{% block title %} Menu | Tiger Orders {% endblock %}
+
+{% block style %}
+.menu-controls {
+  margin-top:10px;
+  margin-right:15px;
+  margin-left:15px;
+}
+.menu-controls {
+  color: white;
+}
+{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
       <!-- Breadcrumbs-->
@@ -20,19 +33,29 @@
                         <tr>
                           <th>Meal</th>
                           <th>Description</th>
+                          <th>Side</th>
+                          <th>Drink</th>
                           <th>Price</th>
                         </tr>
                       </thead>
                       <tbody>
                         {% for meal in allmenuitems %}
+                          {% if meal.current_menu_item %}
                           <tr>
                             <td> {{ meal.name }} </td>
                             <td> {{ meal.description }} </td>
+                            <td> {% if meal.side %} {{ meal.side.name }} {% else %} No Side {% endif %}</td>
+                            {% if meal.has_drink %} <td class="table-success">Yes</td> {% else %} <td class="table-danger">No</td> {% endif %}
                             <td> ${{ meal.price|floatformat:2 }} </td>
                           </tr>
-                         {% endfor %}
+                          {% endif %}
+                        {% endfor %}
                       </tbody>
                     </table>
+                  </div>
+                  <div class="menu-controls">
+                    <a class="btn btn-success" data-toggle="modal" data-target="#addMeal">Add Meal</a>
+                    <!--<a class="btn btn-danger">Remove Selected Meal(s)</a>-->
                   </div>
                 </div>
                 <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
@@ -53,14 +76,20 @@
                     </thead>
                     <tbody>
                       {% for side in allsideitems %}
-                      <tr>
-                        <td>{{ side.name }}</td>
-                        <td>${{ side.price|floatformat:2 }}</td>
-                      </tr>
+                        {% if side.current_menu_item %}
+                        <tr>
+                          <td>{{ side.name }}</td>
+                          <td>${{ side.price|floatformat:2 }}</td>
+                        </tr>
+                        {% endif %}
                       {% endfor %}
                     </tbody>
                   </table>
                 </div>
+              </div>
+              <div class="menu-controls">
+                <a class="btn btn-success" data-toggle="modal" data-target="#addSide">Add Side</a>
+                <!--<a class="btn btn-danger">Remove Selected Sides(s)</a>-->
               </div>
               <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
             </div>
@@ -80,19 +109,136 @@
                     <tbody>
                       <tr>
                         {% for drink in alldrinkitems %}
-                        <tr>
-                          <td>{{ drink.name }}</td>
-                          <td>${{ drink.price|floatformat:2 }}</td>
-                        </tr>
+                          {% if drink.current_menu_item %}
+                          <tr>
+                            <td>{{ drink.name }}</td>
+                            <td>${{ drink.price|floatformat:2 }}</td>
+                          </tr>
+                          {% endif %}
                         {% endfor %}
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
+              <div class="menu-controls">
+                <a class="btn btn-success" data-toggle="modal" data-target="#addDrink">Add Drink</a>
+                <!--<a class="btn btn-danger">Remove Selected Sides(s)</a>-->
+              </div>
               <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block modals %}
+    <!-- Add Meal Modal-->
+    <div class="modal fade" id="addMeal" tabindex="-1" role="dialog" aria-labelledby="addMeal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addMealLabel">Add a Meal</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <form method="post" action="{% url 'menu:create_meal' %}">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="mealName">Meal Name</label>
+                <input class="form-control" id="mealName" name="mealName" type="text" aria-describedby="mealName" placeholder="Enter meal name" required>
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <input class="form-control" id="description" name="description" type="text" placeholder="Description" required>
+              </div>
+              <div class="form-group">
+                <label for="mealSide">Side</label>
+                <select class="form-control" id="mealSide" name="mealSide">
+                  <option value="-1" selected>----</option>
+                  {% for side in allsideitems %}
+                    <option value="{{ side.id }}">{{ side.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <input id="mealHasDrink" type="checkbox" name="mealHasDrink"> Comes with drink.
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input class="form-control" id="price" name="price" type="number" step="0.01" placeholder="Price" value="0" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              <input class="btn btn-primary" type="submit" value="Add">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Side Modal-->
+    <div class="modal fade" id="addSide" tabindex="-1" role="dialog" aria-labelledby="addSide" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addSideLabel">Add a Side</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <form method="post" action="{% url 'menu:create_side' %}">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="sideName">Side Name</label>
+                <input class="form-control" id="sideName" name="sideName" type="text" aria-describedby="sideName" placeholder="Enter side name" required>
+              </div>
+              <div class="form-group">
+                <label for="sidePrice">Price</label>
+                <input class="form-control" id="sidePrice" name="sidePrice" type="number" step="0.01" placeholder="Price" value="0" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              <input class="btn btn-primary" type="submit" value="Add">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Drink Modal-->
+    <div class="modal fade" id="addDrink" tabindex="-1" role="dialog" aria-labelledby="addDrink" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addDrinkLabel">Add a Drink</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <form method="post" action="{% url 'menu:create_drink' %}">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="drinkName">Drink Name</label>
+                <input class="form-control" id="drinkName" name="drinkName" type="text" aria-describedby="drinkName" placeholder="Enter drink name" required>
+              </div>
+              <div class="form-group">
+                <label for="drinkPrice">Price</label>
+                <input class="form-control" id="drinkPrice" name="drinkPrice" type="number" step="0.01" placeholder="Price" value = "0" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              <input class="btn btn-primary" type="submit" value="Add">
+            </div>
+          </form>
         </div>
       </div>
     </div>
