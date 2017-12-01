@@ -27,37 +27,42 @@
               <div class="card mb-3">
                 <div class="card-header">Meals</div>
                 <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-bordered display" width="100%" cellspacing="0">
-                      <thead>
-                        <tr>
-                          <th>Meal</th>
-                          <th>Description</th>
-                          <th>Side</th>
-                          <th>Drink</th>
-                          <th>Price</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for meal in allmenuitems %}
-                          {% if meal.current_menu_item %}
+                  <form action="{% url 'menu:remove_menu_item' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="table-responsive">
+                      <table class="table table-bordered display" width="100%" cellspacing="0">
+                        <thead>
                           <tr>
-                            <td> {{ meal.name }} </td>
-                            <td> {{ meal.description }} </td>
-                            <td> {% if meal.side %} {{ meal.side.name }} {% else %} No Side {% endif %}</td>
-                            {% if meal.has_drink %} <td class="table-success">Yes</td> {% else %} <td class="table-danger">No</td> {% endif %}
-                            <td> ${{ meal.price|floatformat:2 }} </td>
+                            <th></th>
+                            <th>Meal</th>
+                            <th>Description</th>
+                            <th>Side</th>
+                            <th>Drink</th>
+                            <th>Price</th>
                           </tr>
-                          {% endif %}
-                        {% endfor %}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {% for meal in allmenuitems %}
+                            {% if meal.current_menu_item %}
+                            <tr>
+                              <td><label><input id="{{meal.id}}" name="{{meal.id}}" type="checkbox"/></label></td>
+                              <td> {{ meal.name }} </td>
+                              <td> {{ meal.description }} </td>
+                              <td> {% if meal.side %} {{ meal.side.name }} {% else %} No Side {% endif %}</td>
+                              {% if meal.has_drink %} <td class="table-success">Yes</td> {% else %} <td class="table-danger">No</td> {% endif %}
+                              <td> ${{ meal.price|floatformat:2 }} </td>
+                            </tr>
+                            {% endif %}
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="menu-controls">
+                      <a class="btn btn-success" data-toggle="modal" data-target="#addMeal">Add Meal</a>
+                      <input type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove selected items?')" value="Remove Selected Items"/>
+                    </div>
                   </div>
-                  <div class="menu-controls">
-                    <a class="btn btn-success" data-toggle="modal" data-target="#addMeal">Add Meal</a>
-                    <!--<a class="btn btn-danger">Remove Selected Meal(s)</a>-->
-                  </div>
-                </div>
+                </form>
                 <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
               </div>
             </div>
@@ -66,30 +71,35 @@
             <div class="card mb-3">
               <div class="card-header">Sides</div>
               <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-bordered display" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>Side</th>
-                        <th>Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for side in allsideitems %}
-                        {% if side.current_menu_item %}
+                <form action="{% url 'menu:remove_side_item' %}" method="POST">
+                  {% csrf_token %}
+                  <div class="table-responsive">
+                    <table class="table table-bordered display" width="100%" cellspacing="0">
+                      <thead>
                         <tr>
-                          <td>{{ side.name }}</td>
-                          <td>${{ side.price|floatformat:2 }}</td>
+                          <th></th>
+                          <th>Side</th>
+                          <th>Price</th>
                         </tr>
-                        {% endif %}
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-                <div class="menu-controls">
-                  <a class="btn btn-success" data-toggle="modal" data-target="#addSide">Add Side</a>
-                  <!--<a class="btn btn-danger">Remove Selected Sides(s)</a>-->
-                </div>
+                      </thead>
+                      <tbody>
+                        {% for side in allsideitems %}
+                          {% if side.current_menu_item %}
+                          <tr>
+                            <td><label><input id="{{meal.id}}" name="{{meal.id}}" type="checkbox"/></label></td>
+                            <td>{{ side.name }}</td>
+                            <td>${{ side.price|floatformat:2 }}</td>
+                          </tr>
+                          {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="menu-controls">
+                    <a class="btn btn-success" data-toggle="modal" data-target="#addSide">Add Side</a>
+                    <input type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove selected items?')" value="Remove Selected Items"/>
+                  </div>
+                </form>
               </div>
               <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
             </div>
@@ -98,30 +108,35 @@
             <div class="card mb-3">
               <div class="card-header">Drinks</div>
               <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-bordered display" width="100%" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>Drink</th>
-                        <th>Price</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for drink in alldrinkitems %}
-                        {% if drink.current_menu_item %}
+                <form action="{% url 'menu:remove_drink_item' %}" method="POST">
+                  {% csrf_token %}
+                  <div class="table-responsive">
+                    <table class="table table-bordered display" width="100%" cellspacing="0">
+                      <thead>
                         <tr>
-                          <td>{{ drink.name }}</td>
-                          <td>${{ drink.price|floatformat:2 }}</td>
+                          <th></th>
+                          <th>Drink</th>
+                          <th>Price</th>
                         </tr>
-                        {% endif %}
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-                <div class="menu-controls">
-                  <a class="btn btn-success" data-toggle="modal" data-target="#addDrink">Add Drink</a>
-                  <!--<a class="btn btn-danger">Remove Selected Sides(s)</a>-->
-                </div>
+                      </thead>
+                      <tbody>
+                        {% for drink in alldrinkitems %}
+                          {% if drink.current_menu_item %}
+                          <tr>
+                            <td><label><input id="{{meal.id}}" name="{{meal.id}}" type="checkbox"/></label></td>
+                            <td>{{ drink.name }}</td>
+                            <td>${{ drink.price|floatformat:2 }}</td>
+                          </tr>
+                          {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="menu-controls">
+                    <a class="btn btn-success" data-toggle="modal" data-target="#addDrink">Add Drink</a>
+                    <input type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove selected items?')" value="Remove Selected Items"/>
+                  </div>
+                </form>
               </div>
               <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
             </div>
@@ -132,6 +147,25 @@
 {% endblock %}
 
 {% block modals %}
+<!-- Add Meal Modal-->
+  <div class="modal fade" id="removeItem" tabindex="-1" role="dialog" aria-labelledby="removeItem" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="removeItemLabel">Remove Item</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <input class="btn btn-primary" type="submit" value="Remove">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
     <!-- Add Meal Modal-->
     <div class="modal fade" id="addMeal" tabindex="-1" role="dialog" aria-labelledby="addMeal" aria-hidden="true">
       <div class="modal-dialog" role="document">

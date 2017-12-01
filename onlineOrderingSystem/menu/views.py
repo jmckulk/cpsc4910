@@ -98,17 +98,73 @@ def create_drink(request):
             return HttpResponseRedirect(reverse('menu:menu'))
 
         else:
-            return HttpResponseRedirect(reverse('menu:index'))
+            return HttpResponseRedirect(reverse('login:index'))
 
     else:
         return HttpResponseRedirect(reverse('login:login'))
 
-# def manager_view(request):
-#     if request.user.is_authenticated:
-#         all_tickets = Ticket.objects.order_by('creation_time_and_date')
-#         return render(request, 'tickets/tickets.html', {
-#             'alltickets': all_tickets
-#         })
-#
-#     else:
-#         return HttpResponseRedirect(reverse('login:login'))
+
+def remove_drink_item(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            # for key in request.POST:
+            #     print(key)
+            for item, value in request.POST.items():
+                try:
+                    object = Drink.objects.get(id=item)
+                    if object is not "":
+                        object.current_drink_item = False
+                        object.save()
+                except ValueError:
+                    pass
+            return HttpResponseRedirect(reverse('menu:menu'))
+
+        else:
+            return HttpResponseRedirect(reverse('login:index'))
+
+    else:
+        return HttpResponseRedirect(reverse('login:login'))
+
+
+def remove_side_item(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            # for key in request.POST:
+            #     print(key)
+            for item, value in request.POST.items():
+                try:
+                    object = Side.objects.get(id=item)
+                    if object is not "":
+                        object.current_side_item = False
+                        object.save()
+                except ValueError:
+                    pass
+            return HttpResponseRedirect(reverse('menu:menu'))
+
+        else:
+            return HttpResponseRedirect(reverse('login:index'))
+
+    else:
+        return HttpResponseRedirect(reverse('login:login'))
+
+
+def remove_menu_item(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            # for key in request.POST:
+            #     print(key)
+            for item, value in request.POST.items():
+                try:
+                    object = Meal.objects.get(id=item)
+                    if object is not "":
+                        object.current_menu_item = False
+                        object.save()
+                except ValueError:
+                    pass
+            return HttpResponseRedirect(reverse('menu:menu'))
+
+        else:
+            return HttpResponseRedirect(reverse('login:index'))
+
+    else:
+        return HttpResponseRedirect(reverse('login:login'))
