@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^', include('tickets.urls')),
     url(r'^', include('login.urls')),
     url(r'^', include('menu.urls')),
+    url(r'^', include('register.urls')),
 ]

@@ -1,23 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block title %} Menu | Tiger Orders {% endblock %}
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Create Account</title>
-  <!-- Bootstrap core CSS-->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom fonts for this template-->
-  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-  <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
-</head>
+{% block style %}
+.menu-controls {
+  margin-top:10px;
+  margin-right:15px;
+  margin-left:15px;
+}
+.menu-controls {
+  color: white;
+}
+{% endblock %}
 
-<form method="post" action="{% url 'menu:create_meal' %}">
-{% csrf_token %}
+{% block content %}
 <body class="bg-dark">
   <div class="container">
     <div class="card card-register mx-auto mt-5">
@@ -68,6 +63,8 @@
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 </body>
-</form>
-
-</html>
+{% block scripts %}
+$(document).ready(function() {
+  $('table.display').DataTable();
+});
+{% endblock %}

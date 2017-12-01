@@ -4,5 +4,5 @@ from . import views
 app_name = 'register'
 
 urlpatterns = [
-    url(r'^create_account/$', views.create_account, name="create_account"),
+    url(r'^register_user/$', views.register_user, name="register_user"),
 ]
