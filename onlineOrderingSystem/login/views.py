@@ -30,13 +30,15 @@ def userLogin(request):
 
 def userLogout(request):
     logout(request)
-    print("imma reverse")
     return HttpResponseRedirect(reverse('login:index'))
 
 
 def index(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('tickets:manager_view'))
+        if request.user.groups.filter(name='Manager'):
+            return HttpResponseRedirect(reverse('tickets:manager_view'))
+        else:
+            return HttpResponseRedirect(reverse('tickets:kitchen_view'))
 
     else:
         return HttpResponseRedirect(reverse('login:login'))

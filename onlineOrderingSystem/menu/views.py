@@ -1,18 +1,20 @@
 from django.shortcuts import render
-from .models import Meal, Side, Drink
+from .models import Meal, Side, Drink, Topping
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
 
 def menu(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
         all_menu_items = Meal.objects.order_by('id')
         all_side_items = Side.objects.order_by('id')
         all_drink_items = Drink.objects.order_by('id')
+        all_topping_items = Topping.objects.order_by('id')
         return render(request, 'menu/menu.html', {
             'allmenuitems': all_menu_items,
             'allsideitems': all_side_items,
             'alldrinkitems': all_drink_items,
+            'alltoppingitems': all_topping_items,
         })
 
     else:
@@ -20,7 +22,7 @@ def menu(request):
 
 
 def create_meal(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
         if request.method == 'POST':
             mealName = request.POST.get("mealName", "")
             description = request.POST.get("description", "")
@@ -55,7 +57,7 @@ def create_meal(request):
 
 
 def create_side(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
         if request.method == 'POST':
             sideName = request.POST.get("sideName", "")
             price = request.POST.get("sidePrice", "")
@@ -80,7 +82,7 @@ def create_side(request):
 
 
 def create_drink(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
         if request.method == 'POST':
             drinkName = request.POST.get("drinkName", "")
             price = request.POST.get("drinkPrice", "")
@@ -103,12 +105,34 @@ def create_drink(request):
     else:
         return HttpResponseRedirect(reverse('login:login'))
 
+def create_topping(request):
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
+        if request.method == 'POST':
+            toppingName = request.POST.get("toppingName", "")
+            price = request.POST.get("toppingPrice", "")
+
+            if toppingName == "" or price == "":
+                return HttpResponseRedirect(reverse('menu:menu'))
+
+            topping = Topping()
+            topping.name = toppingName
+            topping.price = price
+            topping.current_menu_item = True
+
+            topping.save()
+
+            return HttpResponseRedirect(reverse('menu:menu'))
+
+        else:
+            return HttpResponseRedirect(reverse('login:index'))
+
+    else:
+        return HttpResponseRedirect(reverse('login:login'))
+
 
 def remove_drink_item(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
         if request.method == 'POST':
-            # for key in request.POST:
-            #     print(key)
             for item, value in request.POST.items():
                 try:
                     object = Drink.objects.get(id=item)
@@ -127,11 +151,10 @@ def remove_drink_item(request):
 
 
 def remove_side_item(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
         if request.method == 'POST':
-            # for key in request.POST:
-            #     print(key)
             for item, value in request.POST.items():
+                print(item)
                 try:
                     object = Side.objects.get(id=item)
                     if object is not "":
@@ -149,13 +172,31 @@ def remove_side_item(request):
 
 
 def remove_menu_item(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
         if request.method == 'POST':
-            # for key in request.POST:
-            #     print(key)
             for item, value in request.POST.items():
                 try:
                     object = Meal.objects.get(id=item)
+                    if object is not "":
+                        object.current_menu_item = False
+                        object.save()
+                except ValueError:
+                    pass
+            return HttpResponseRedirect(reverse('menu:menu'))
+
+        else:
+            return HttpResponseRedirect(reverse('login:index'))
+
+    else:
+        return HttpResponseRedirect(reverse('login:login'))
+
+
+def remove_topping_item(request):
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
+        if request.method == 'POST':
+            for item, value in request.POST.items():
+                try:
+                    object = Topping.objects.get(id=item)
                     if object is not "":
                         object.current_menu_item = False
                         object.save()

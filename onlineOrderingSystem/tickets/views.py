@@ -155,6 +155,10 @@ def kitchen_view(request):
         except:
             ticket6 = None
 
+        is_manager = False
+        if request.user.groups.filter(name='Manager').exists():
+            is_manager = True
+
         return render(request, 'tickets/view_orders.html', {
             'ticket1': ticket1,
             'ticket2': ticket2,
@@ -168,6 +172,7 @@ def kitchen_view(request):
             'mealSubtractions': mealSubtractions,
             'sideAdditions': sideAdditions,
             'sideSubtractions': sideSubtractions,
+            'is_manager': is_manager,
         })
 
     else:
@@ -188,7 +193,7 @@ def fulfill_ticket(request, ticketID):
 
 
 def manager_view(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.groups.filter(name='Manager'):
         all_tickets = Ticket.objects.order_by('creation_time_and_date')
         return render(request, 'tickets/tickets.html', {
             'alltickets': all_tickets

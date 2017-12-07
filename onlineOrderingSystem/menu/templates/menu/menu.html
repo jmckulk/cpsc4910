@@ -33,7 +33,6 @@
                       <table class="table table-bordered display" width="100%" cellspacing="0">
                         <thead>
                           <tr>
-                            <th></th>
                             <th>Meal</th>
                             <th>Description</th>
                             <th>Side</th>
@@ -45,8 +44,7 @@
                           {% for meal in allmenuitems %}
                             {% if meal.current_menu_item %}
                             <tr>
-                              <td><label><input id="{{meal.id}}" name="{{meal.id}}" type="checkbox"/></label></td>
-                              <td> {{ meal.name }} </td>
+                              <td><input id="{{meal.id}}" name="{{meal.id}}" type="checkbox"/> {{ meal.name }} </td>
                               <td> {{ meal.description }} </td>
                               <td> {% if meal.side %} {{ meal.side.name }} {% else %} No Side {% endif %}</td>
                               {% if meal.has_drink %} <td class="table-success">Yes</td> {% else %} <td class="table-danger">No</td> {% endif %}
@@ -77,7 +75,6 @@
                     <table class="table table-bordered display" width="100%" cellspacing="0">
                       <thead>
                         <tr>
-                          <th></th>
                           <th>Side</th>
                           <th>Price</th>
                         </tr>
@@ -86,8 +83,7 @@
                         {% for side in allsideitems %}
                           {% if side.current_menu_item %}
                           <tr>
-                            <td><label><input id="{{meal.id}}" name="{{meal.id}}" type="checkbox"/></label></td>
-                            <td>{{ side.name }}</td>
+                            <td><input id="{{side.id}}" name="{{side.id}}" type="checkbox"/> {{ side.name }}</td>
                             <td>${{ side.price|floatformat:2 }}</td>
                           </tr>
                           {% endif %}
@@ -114,7 +110,6 @@
                     <table class="table table-bordered display" width="100%" cellspacing="0">
                       <thead>
                         <tr>
-                          <th></th>
                           <th>Drink</th>
                           <th>Price</th>
                         </tr>
@@ -123,8 +118,7 @@
                         {% for drink in alldrinkitems %}
                           {% if drink.current_menu_item %}
                           <tr>
-                            <td><label><input id="{{meal.id}}" name="{{meal.id}}" type="checkbox"/></label></td>
-                            <td>{{ drink.name }}</td>
+                            <td><input id="{{drink.id}}" name="{{drink.id}}" type="checkbox"/> {{ drink.name }}</td>
                             <td>${{ drink.price|floatformat:2 }}</td>
                           </tr>
                           {% endif %}
@@ -134,6 +128,40 @@
                   </div>
                   <div class="menu-controls">
                     <a class="btn btn-success" data-toggle="modal" data-target="#addDrink">Add Drink</a>
+                    <input type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove selected items?')" value="Remove Selected Items"/>
+                  </div>
+                </form>
+              </div>
+              <div class="card-footer small text-muted">Updated at {% now "SHORT_DATETIME_FORMAT" %}</div>
+            </div>
+            <div id="Additions">
+            <div class="card mb-3">
+              <div class="card-header">toppings</div>
+              <div class="card-body">
+                <form action="{% url 'menu:remove_topping_item' %}" method="POST">
+                  {% csrf_token %}
+                  <div class="table-responsive">
+                    <table class="table table-bordered display" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>topping</th>
+                          <th>Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for topping in alltoppingitems %}
+                          {% if topping.current_menu_item %}
+                          <tr>
+                            <td><input id="{{topping.id}}" name="{{topping.id}}" type="checkbox"/> {{ topping.name }}</td>
+                            <td>${{ topping.price|floatformat:2 }}</td>
+                          </tr>
+                          {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="menu-controls">
+                    <a class="btn btn-success" data-toggle="modal" data-target="#addTopping">Add Addition</a>
                     <input type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove selected items?')" value="Remove Selected Items"/>
                   </div>
                 </form>
@@ -264,6 +292,37 @@
               <div class="form-group">
                 <label for="drinkPrice">Price</label>
                 <input class="form-control" id="drinkPrice" name="drinkPrice" type="number" step="0.01" placeholder="Price" value = "0" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              <input class="btn btn-primary" type="submit" value="Add">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Topping Modal-->
+    <div class="modal fade" id="addTopping" tabindex="-1" role="dialog" aria-labelledby="addTopping" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addToppingLabel">Add a Topping</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <form method="post" action="{% url 'menu:create_topping' %}">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="toppingName">Topping Name</label>
+                <input class="form-control" id="toppingName" name="toppingName" type="text" aria-describedby="toppingName" placeholder="Enter topping name" required>
+              </div>
+              <div class="form-group">
+                <label for="toppingPrice">Price</label>
+                <input class="form-control" id="toppingPrice" name="toppingPrice" type="number" step="0.01" placeholder="Price" value = "0" required>
               </div>
             </div>
             <div class="modal-footer">
